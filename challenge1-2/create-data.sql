@@ -1,0 +1,12 @@
+CREATE TABLE POST (
+  ID INT PRIMARY KEY NOT NULL,
+  TITLE CHAR(50) NOT NULL,
+  BODY TEXT NOT NULL
+);
+
+INSERT INTO POST (
+  ID, TITLE, BODY
+)
+VALUES (
+  1, 'Dockerの学習', 'コンテナを使って効率の良い開発を行えるよう学習しました。'
+);
