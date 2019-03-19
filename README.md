@@ -1,90 +1,105 @@
-## Docker研修
+# Docker研修
 
 ## ToC
 
-
-
-- 仮想環境
+- 仮想環境について
   - 仮想環境はなぜ必要か？
   - 仮想マシン(VirtualBox/VMware)
   - Vagrant
   - Docker
+  - 仮想マシン vs コンテナ
   - Docker vs Vagrant
 - Dockerについて
   - Dockerのメリット
   - Dockerのデメリット
 - まとめ1
+
 - ハンズオン準備
-- Containers
-- Images
-- Volumes
-- Networks
+- Dockerの基礎
+  - コンテナ
+  - Lesson1: まずはコンテナを動かしてみよう
+  - Docker Hub
+  - Challenge1-1: PostgreSQLのDBコンテナを作ってみよう
+  - Challenge1-2: 初期データを投入してみよう
+  - イメージ
+  - Lesson2: イメージを作ってみよう
+  - Lesson3: 作ったイメージをDocker Hubで共有しよう
+  - ボリューム
+  - Lesson4: ボリュームなしの場合でコンテナを削除してみよう
+  - Lesson5: ボリュームを作成してデータを永続化してみよう
+  - ボリュームマウントとバインドマウント
+  - ネットワーク
+  - Lesson6: コンテナ間で通信しよう
+  - [補足]ネットワークドライバの種類
 - まとめ2
+
 - コンテナオーケストレーションについて
-- Docker Compose
-- docker-compose.yml
-- その他のオーケストレーションツール
-  - Docker Swarm
-  - Kubernetes (k8s)
+  - Docker Compose
+  - docker-compose.yml
+  - Lesson7: Docker ComposeでRails開発環境を作ってみよう
+  - Lesson8: ローカルのDockerfileからRails環境を作ってみよう
+  - Challenge8-1: ボリュームとネットワークを指定する
+  - Dockerを開発で使うためのTips
+  - その他のオーケストレーションツール
 - まとめ3
+- [おまけ]パブリッククラウド
 
 
+## 仮想環境について
 
-## 仮想環境はなぜ必要か？
-
-
+### 仮想環境はなぜ必要か？
 
 - ローカル環境を汚さないするため
 - 複数人で同じ環境化で開発するため
 - 本番環境と同じ(または近い)環境で開発するため
 
 
+### 仮想マシン (Virtual Machine/VM)
 
-## 仮想マシン (Virtual Machine/VM)
-
-ホストOS型の仮想化技術。VirtualBox/VMwareなど。
+ホストOS/ハイパーバイザー型の仮想化技術。VirtualBox/VMwareなど。
 
 ホストOS上にゲストOSを動かす。(例: ローカルのmacOS上にWindowsやLinuxのVMを立てる)
 
+参考: https://ascii.jp/elem/000/000/414/414625/index-4.html
 
 
-## Vagrant
+### Vagrant
 
-VirtualBoxなどの仮想環境を設定ファイル(Vagrantfile)に基づいて管理/構築できるツール。
+VirtualBoxなどのVMを設定ファイル(Vagrantfile)に基づいて管理/構築できるツール。
 
 boxというVMイメージからVMを作成する。
 
 
-
-## Dockerとは
+### Dockerとは
 
 コンテナ型の仮想化技術。
 
 ゲストOSを使わずにDocker Engine上のコンテナでアプリケーションを動かす。
 
-ホストOS型よりも軽量で、起動が早いのが特徴。
+ホストOS/ハイパーバイザー型よりも軽量で、起動が早いのが特徴。
 
 基本「１コンテナ=１関心事」が良い。
 
 https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 
+### 仮想マシン vs コンテナ
 
+参考: https://cn.teldevice.co.jp/column/10509/
 
-## Docker vs Vagrant
+### Docker vs Vagrant
 
 |                  | Docker     | Vagrant              |
 | ---------------- | ---------- | -------------------- |
 | 役割             | 仮想環境   | 仮想マシン(VM)の管理 |
 | プラットフォーム | Linux      | Windows/macOS/Linux  |
 | 起動時間         | 数秒       | 数分                 |
-| 環境の分離       | 一部       | 完全                 |
+| 環境の隔離性       | 一部       | 完全                 |
 | 設定ファイル     | Dockerfile | Vagrantfile          |
 
 
+## Dockerについて
 
-
-
-## Dockerのメリット
+### Dockerのメリット
 
 - 非常に軽量
 - 環境構築のコード化
@@ -92,26 +107,21 @@ https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
 - ポータビリティ
 
 
+### Dockerのデメリット
 
-## Dockerのデメリット
-
-- ホストOSのような完全なふるまいはできない (例: ハードウェアエミュレート)
+- ゲストOSのような完全なふるまいはできない (例: ハードウェアエミュレート)
 - 非Linux環境の動作はできない
-
 
 
 ## まとめ1
 
-
-
-- 仮想化技術にはホストOS型とコンテナ型がある
-- ホストOS型ではVagrantというツールでVMを管理できる
+- 仮想化技術には仮想マシン(ホストOS/ハイパーバイザー)とコンテナがある
+- VagrantというツールでVMを管理できる
 - コンテナ型の一つにDockerがある
 - ホストOS型とコンテナ型にそれぞれ得意/不得意がある
 
 
-
-------
+------------------
 
 
 
@@ -122,10 +132,9 @@ $ git clone https://github.com/7nohe/docker-lessons.git
 $ cd docker-lessons
 ```
 
+## Dockerの基礎
 
-
-## Containers
-
+### コンテナ
 
 
 アプリケーションを動かすための箱(コンテナ)を作成します。
@@ -152,8 +161,7 @@ https://docs.docker.com/engine/reference/commandline/container/
 
 
 
-## Lesson1: まずはコンテナを動かしてみよう
-
+### Lesson1: まずはコンテナを動かしてみよう
 
 
 nginxイメージを使って、静的ファイル配信用サーバーを立ててみます。
@@ -181,7 +189,7 @@ http://localhost:8000にアクセスしてみましょう。
 
 
 
-## Docker Hub
+### Docker Hub
 
 Dockerレジストリサーバー。
 
@@ -199,7 +207,7 @@ Docker HubにあるDocker Registryイメージを使えばプライベートな�
 
 
 
-## Challenge1-1: PostgreSQLのDBコンテナを作ってみよう
+### Challenge1-1: PostgreSQLのDBコンテナを作ってみよう
 
 
 
@@ -224,11 +232,7 @@ dockerdb=# \l
 
 
 
-
-
-
-
-## Challenge1-2: 初期データを投入してみよう
+### Challenge1-2: 初期データを投入してみよう
 
 
 
@@ -271,8 +275,7 @@ dockerdb=# SELECT * FROM POST;
 ```
 
 
-
-## Images
+### イメージ
 
 コンテナを作るための元となるもの。
 
@@ -296,7 +299,7 @@ Dockerfileを定義することで、自分でカスタマイズしたイメー�
 
 
 
-## Lesson2: イメージを作ってみよう
+###  Lesson2: イメージを作ってみよう
 
 Rubyイメージを元にコンテナ起動時にスクリプトが実行されるイメージを作成してみましょう。
 
@@ -338,7 +341,7 @@ $ docker container run hello_ruby:latest
 
 
 
-## Lesson3: 作ったイメージをDocker Hubで共有しよう
+### Lesson3: 作ったイメージをDocker Hubで共有しよう
 
 
 
@@ -396,7 +399,7 @@ $ docker search [探したいイメージ名]
 
 
 
-## Volumes
+### ボリューム
 
 ボリュームは永続化したいデータをDockerで管理できるもの。
 
@@ -417,7 +420,7 @@ $ docker search [探したいイメージ名]
 
 
 
-## Lesson4: ボリュームなしの場合でコンテナを削除してみよう
+### Lesson4: ボリュームなしの場合でコンテナを削除してみよう
 
 Challenge1-2で作成したコンテナ(ボリュームなし)を削除して、再度初期データを投入せずに作成してみましょう。
 
@@ -434,7 +437,7 @@ dockerdb=# SELECT * FROM POST; # 失敗する
 
 
 
-## Lesson5: ボリュームを作成してデータを永続化してみよう
+### Lesson5: ボリュームを作成してデータを永続化してみよう
 
 それではボリュームをつくってデータベース情報を永続化してみます。
 
@@ -469,15 +472,30 @@ dockerdb=# SELECT * FROM POST; # 成功！
 
 
 
-## ボリュームマウントとバインドマウント
+### ボリュームマウントとバインドマウント
+
+
+ボリュームマウント
+```
+$ docker container run -v postgres-data:/var/lib/postgresql/data postgres
+# または
+$ docker container run --mount type=volume,src=postgres-data,dst=/var/lib/postgresql/data postgres
+```
+
+バインドマウント
+```
+$ docker container run -v $(pwd)/tmp/db:/var/lib/postgresql/data postgres
+# または
+$ docker container run --mount type=bind,src="$(pwd)/tmp/db",dst=/var/lib/postgresql/data postgres
+```
+
+
+参考: https://docs.docker.com/storage/volumes/#choose-the--v-or---mount-flag
 
 
 
 
-
-
-
-## Networks
+### ネットワーク
 
 コンテナ間で通信を行うためのもの。
 
@@ -498,7 +516,7 @@ dockerdb=# SELECT * FROM POST; # 成功！
 
 
 
-## Lesson6: コンテナ間で通信しよう
+### Lesson6: コンテナ間で通信しよう
 
 
 
@@ -545,7 +563,7 @@ $ docker network inspect busybox-network
 
 
 
-## [補足]ネットワークドライバの種類
+### [補足]ネットワークドライバの種類
 
 
 
@@ -586,7 +604,7 @@ Dockerのネットワークドライバは複数あります。
 
 
 
-## Docker Compose
+### Docker Compose
 
 コンテナオーケストレーションツールの一つで、単一Dockerホストでの複数コンテナを扱う際に便利です。
 
@@ -601,7 +619,7 @@ Dockerのネットワークドライバは複数あります。
 
 
 
-## docker-compose.yml
+### docker-compose.yml
 
 Docker Composeで扱うためのコンテナ定義ファイル。
 
@@ -636,24 +654,145 @@ volumes:
 
 
 
-## Lesson7: Rails開発環境を作ってみよう
-
-<https://github.com/7nohe/rails-docker-example>
+## Lesson7: Docker ComposeでRails開発環境を作ってみよう
 
 
 
-## そのほかのオーケストレーションツール
+```bash
+$ git clone https://github.com/7nohe/rails-docker-example.git
+$ cd rails-docker-example
+$ cp .env.example .env
+$ docker-compose up -d
+$ docker-compose exec web rails db:create
+```
 
 
 
-- Docker Swarm:
-- Kubernetes (k8s): 
+http://localhost:3000/ へアクセス。
+
+
+
+### Lesson8: ローカルのDockerfileからRails環境を作ってみよう
+
+
+
+1. rails-docker-example/ 以下に/lesson8のDockerfileを配置。
+2. docker-compose.ymlを編集
+
+```yaml
+version: "3"
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    container_name: ${DB_CONTAINER_NAME}
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+  web:
+    # image: 7nohe/rails # <- ここを削除
+    build: . # <- ここを追加
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    container_name: ${WEB_CONTAINER_NAME}
+    volumes:
+      - .:/rails_app
+    ports:
+      - ${WEB_APP_PORT}:3000
+    depends_on:
+      - db
+
+```
+
+
+
+3. 再起動する
+
+```
+$ docker-compose up -d
+```
 
 
 
 
 
-## まとめ３
+### Challenge8-1: ボリュームとネットワークを指定する
+
+
+
+docker-compose.ymlを編集して、ボリュームとネットワークを指定してみましょう。
+
+
+
+- dbコンテナはpostgresデータをバインドマウントからボリュームマウントへ変更する(ドライバーは`local`)
+- ネットワークはデフォルトのものから自分でつけた名前(`rails-network` とか)にしてそれぞれのコンテナに接続する (ドライバーは`bridge`)
+
+
+
+ヒント: docker-compose.ymlで `volumes` と `nentworks` を定義する。
+
+参考: 
+
+<https://docs.docker.com/compose/compose-file/#volumes>
+
+<https://docs.docker.com/compose/compose-file/#networks>
+
+
+
+確認方法:
+
+```
+$ docker container inspect rails-db
+$ docker network inspect rails-docker-example_[自分でつけたネットワーク名]
+```
+
+
+### Dockerを開発で使うためのTips
+
+
+
+- Rails開発環境をDocker Composeで使っていく場合は、Dockerレジストリで管理するのではなく、Dockerfileを作成してGitで管理していくのが良いと思います。
+
+- Docker Hubにある野良イメージは安易にしようしないようにして、出来るだけ公式のものを使うようにしましょう。
+
+
+
+
+
+### そのほかのオーケストレーションツール
+
+
+
+- Docker Swarm: 複数のDockerホストのコンテナを管理できるツール
+- Kubernetes (k8s):  Docker Swarmをより高機能にしたもの
+
+
+
+参考: <https://go-mount.hatenablog.com/entry/2018/09/27/220404>
+
+
+
+
+
+## まとめ3
+
+
+
+- 複数のコンテナ管理はDocker Composeで簡単にできる
+- 大規模アプリはSwarmやk8sを使う
+
+
+
+
+
+## [おまけ]パブリッククラウド
+
+
+
+- AWS: ECS/ECR/CodeBuild/Fargate/EKS
+- GCP: Container Builder/Contaner Registry/GKE/GCE(Container Optimized OS)
+- Azure: AKS/ACR/ACI
 
 
 
