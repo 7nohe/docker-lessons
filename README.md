@@ -171,7 +171,7 @@ nginxイメージを使って、静的ファイル配信用サーバーを立て
 
 
 ```
-$ cd lesson0
+$ cd lesson1
 
 $ docker run --name my-nginx -v $(pwd):/usr/share/nginx/html:ro -d -p 8000:80 nginx
 ```
