@@ -287,7 +287,7 @@ Dockerfileを定義することで、自分でカスタマイズしたイメー�
 
 よく使うコマンド
 
-- `docker images build -t [イメージ名(:タグ名)] [Dockerfileのパス]` : イメージのビルド
+- `docker image build -t [イメージ名(:タグ名)] [Dockerfileのパス]` : イメージのビルド
 - `docker image rm [イメージ名]` : イメージの削除
 - `docker image ls` : イメージの一覧表示
 - `docker image tag [ソースイメージ名(:タグ名)] [ターゲットイメージ名(:タグ名)]` : イメージのタグ付け
