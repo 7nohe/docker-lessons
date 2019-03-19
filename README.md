@@ -23,6 +23,7 @@
   - Challenge1-2: 初期データを投入してみよう
   - イメージ
   - Lesson2: イメージを作ってみよう
+  - Challenge2-1: Goプログラムを実行してみよう
   - Lesson3: 作ったイメージをDocker Hubで共有しよう
   - ボリューム
   - Lesson4: ボリュームなしの場合でコンテナを削除してみよう
@@ -43,6 +44,7 @@
   - その他のオーケストレーションツール
 - まとめ3
 - [おまけ]パブリッククラウド
+- お掃除
 
 
 ## 仮想環境について
@@ -339,6 +341,15 @@ $ docker container run hello_ruby:latest
 "Hello World!"
 ```
 
+### Challenge2-1: Goプログラムを実行してみよう
+
+- hello.goを動かすDockerコンテナを起動してみましょう
+
+確認方法:
+
+```
+$ docker container run [イメージ名]
+```
 
 
 ### Lesson3: 作ったイメージをDocker Hubで共有しよう
@@ -794,5 +805,16 @@ $ docker network inspect rails-docker-example_[自分でつけたネットワー
 - GCP: Container Builder/Contaner Registry/GKE/GCE(Container Optimized OS)
 - Azure: AKS/ACR/ACI
 
+
+## お掃除
+
+使うときは気をつけましょう。
+
+```
+$ docker system prune
+$ docker image prune
+$ docker volume prune
+$ docker container prune
+```
 
 
